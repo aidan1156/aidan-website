@@ -1,5 +1,5 @@
 import React, { ReactNode, forwardRef, useCallback, useEffect, useRef, useState } from "react"
-import { RegisterGlassEffect, UpdateGlassEffect, GlassData } from './GlassEffect';
+import { useGlassEffect } from './GlassEffect';
 import './glass-navigation-bar.css';
 type Props = {
     children: ReactNode,
@@ -31,15 +31,11 @@ export const GlassNavigationBar = forwardRef<HTMLDivElement, Props>(function Gla
         }
     }, [ref]);
     const [floatingNav, setFloatingNav] = useState(false);
-    const [glassEffect, setGlassEffect] = useState<GlassData | undefined>(undefined);
+    const glassEffect = useGlassEffect(localRef, { updateKey: String(floatingNav) });
     const theme = floatingNav ? props.floatingTheme : props.fixedTheme;
 
     const handleScroll = () => {
         setFloatingNav(window.scrollY > 0);
-    };
-
-    const updateGlass = () => {
-        setGlassEffect(UpdateGlassEffect(localRef, glassEffect));
     };
 
     useEffect(() => {
@@ -53,24 +49,8 @@ export const GlassNavigationBar = forwardRef<HTMLDivElement, Props>(function Gla
     }, []);
 
     useEffect(() => {
-        setGlassEffect(RegisterGlassEffect(localRef));
-        window.addEventListener('resize', updateGlass);
-
-        const t = setTimeout(() => {
-            updateGlass();
-        }, 100);
-
-        return () => {
-            clearTimeout(t);
-            window.removeEventListener('resize', updateGlass);
-        };
-    }, []);
-
-    useEffect(() => {
         props.setTheme?.(theme);
     }, [floatingNav, props.floatingTheme, props.fixedTheme])
-
-    useEffect(updateGlass, [floatingNav])
 
     return (
         <div className={`glass-nav-wrapper ${theme} ${props.placeholder ? 'placeholder' : ''} ${props.className || ''}`}>

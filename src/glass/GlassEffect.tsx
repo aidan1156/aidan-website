@@ -1,5 +1,5 @@
 
-import { JSX, RefObject } from "react";
+import { JSX, RefObject, useEffect, useRef, useState } from "react";
 import './glass-effect.css';
 
 export type GlassData = {
@@ -14,18 +14,75 @@ type GlassModifiers = {
     increaseBlur?: boolean;
 }
 
+type GlassMeasurement = {
+    width: number | undefined;
+    height: number | undefined;
+    radius: number;
+}
+
+export type GlassOptions = {
+    increaseBlur?: boolean;
+    // bump this whenever the element's layout changes for a reason we can't observe
+    updateKey?: string;
+}
+
 export enum GlassMode {
     Liquid,
     Blurred,
 }
 
-export function RegisterGlassEffect(ref: RefObject<HTMLDivElement | null>, increaseBlur?: boolean): GlassData {
-    return UpdateGlassEffect(ref, undefined, increaseBlur);
-}
+// Owns the glass filter for one element: re-measures on mount, on resize and once a
+// second, and only rebuilds the filter when the measurement actually changed.
+export function useGlassEffect(ref: RefObject<HTMLDivElement | null>, options?: GlassOptions): GlassData | undefined {
+    const idRef = useRef('glass-distortion-' + Math.random().toString(36).substring(2, 15));
+    const signatureRef = useRef<string | undefined>(undefined);
+    const [glassEffect, setGlassEffect] = useState<GlassData | undefined>(undefined);
 
+    const increaseBlur = options?.increaseBlur;
+    const updateKey = options?.updateKey;
 
-export function UpdateGlassEffect(ref: RefObject<HTMLDivElement | null>, glassEffect?: GlassData, increaseBlur?: boolean) {
-    return GenerateSvg('glass-distortion-' + Math.random().toString(36).substring(2, 15), ref, glassEffect, { increaseBlur });
+    useEffect(() => {
+        const update = () => {
+            const measurement = MeasureGlass(ref);
+            const signature = `${measurement.width}x${measurement.height}@${measurement.radius}:${increaseBlur}`;
+
+            if (signature === signatureRef.current) return;
+            signatureRef.current = signature;
+
+            setGlassEffect(GenerateSvg(idRef.current, measurement, { increaseBlur }));
+        };
+
+        // MeasureGlass forces a layout, and scroll can fire several times per frame,
+        // so coalesce bursts of events down to a single measurement per frame.
+        let frame: number | null = null;
+        const scheduleUpdate = () => {
+            if (frame !== null) return;
+
+            frame = requestAnimationFrame(() => {
+                frame = null;
+                update();
+            });
+        };
+
+        update();
+
+        // the element keeps settling for a few frames after a layout change
+        const timeouts = [100, 200, 300, 400, 500].map(delay => setTimeout(update, delay));
+        const interval = setInterval(update, 2000);
+
+        window.addEventListener('resize', scheduleUpdate, { passive: true });
+        window.addEventListener('scroll', scheduleUpdate, { passive: true });
+
+        return () => {
+            if (frame !== null) cancelAnimationFrame(frame);
+            timeouts.forEach(clearTimeout);
+            clearInterval(interval);
+            window.removeEventListener('scroll', scheduleUpdate);
+            window.removeEventListener('resize', scheduleUpdate);
+        };
+    }, [ref, increaseBlur, updateKey]);
+
+    return glassEffect;
 }
 
 export function SupportsLiquidGlass(): boolean {
@@ -39,20 +96,24 @@ export function SupportsLiquidGlass(): boolean {
         navigatorWithUserAgent.userAgentData.brands.some(brand => brand.brand === 'Chromium')
 }
 
-function GenerateSvg(id: string, ref: RefObject<HTMLDivElement | null>, glassEffect?: GlassData, modifiers?: GlassModifiers): GlassData {
-    const rect = ref.current?.getBoundingClientRect()
+function MeasureGlass(ref: RefObject<HTMLDivElement | null>): GlassMeasurement {
+    const element = ref.current
+    const rect = element?.getBoundingClientRect()
 
-    let radius = glassEffect?.radius
-    if (ref.current !== null && typeof window !== 'undefined') {
-        radius = parseInt(window.getComputedStyle(ref.current).getPropertyValue('border-top-left-radius').slice(0, -2), 10);
+    let radius = 15
+    if (element !== null && element !== undefined && typeof window !== 'undefined') {
+        radius = parseInt(window.getComputedStyle(element).getPropertyValue('border-top-left-radius').slice(0, -2), 10)
     }
 
-    if (radius === undefined) {
-        radius = 15;
+    if (!Number.isFinite(radius)) {
+        radius = 15
     }
 
+    return { width: rect?.width, height: rect?.height, radius }
+}
 
-    const filter = CalculateFilter(rect?.width, rect?.height, radius);
+function GenerateSvg(id: string, measurement: GlassMeasurement, modifiers?: GlassModifiers): GlassData {
+    const filter = CalculateFilter(measurement.width, measurement.height, measurement.radius)
 
     const isChromium = SupportsLiquidGlass()
 
@@ -60,7 +121,7 @@ function GenerateSvg(id: string, ref: RefObject<HTMLDivElement | null>, glassEff
         id: `url(#${id})`,
         classes: isChromium ? 'glass-effect' : 'blurred-effect',
         mode: isChromium ? GlassMode.Liquid : GlassMode.Blurred,
-        radius: radius,
+        radius: measurement.radius,
         filterNode: (
             <svg className="effect-svg" xmlns="http://www.w3.org/2000/svg" >
                 <defs>
