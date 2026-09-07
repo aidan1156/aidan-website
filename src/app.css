@@ -1,0 +1,37 @@
+
+
+main {
+    max-width: var(--page-max-width);
+    padding: 1rem;
+    margin: 3rem auto;
+    min-height: 120vh;
+}
+
+.navigation-bar {
+    font-family: NType82, system-ui;
+}
+
+.navigation-bar-inner.floating {
+    padding: 0.5em 2em;
+}
+
+.navigation-bar h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.navigation-links {
+    display: flex;
+}
+
+.navigation-links a {
+    padding: 0.8em 1.5em;
+    border-radius: var(--border-radius);
+    color: inherit;
+}
+
+@media (max-width: 700px) {
+    .navigation-links {
+        display: none;
+    }
+}

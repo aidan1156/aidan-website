@@ -1,0 +1,51 @@
+
+.glass-nav-wrapper:not(.placeholder) {
+    display: flex;
+    place-content: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    right: 0;
+}
+
+nav {
+    padding: 1em;
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+    align-items: center;
+    transition: .6s all var(--bounce-function);
+}
+
+nav.dark {
+    color: white;
+}
+
+nav.light {
+    color: black;
+}
+
+.glass-nav-wrapper:not(.placeholder) nav.floating {
+    margin-top: 1em;
+    box-sizing: border-box;
+    width: min(calc(100% - 4em), 70rem);
+    border-radius: calc(var(--border-radius) * 1);
+}
+
+.glass-nav-wrapper:not(.placeholder) nav {
+    width: 100%;
+}
+
+.glass-nav-wrapper.placeholder nav {
+    opacity: 0;
+}
+
+nav * {
+    transition: .6s all var(--bounce-function);
+}
+
+@media (max-width: 50em) {
+    nav {
+        display: flex;
+        place-content: space-between;
+    }
+}

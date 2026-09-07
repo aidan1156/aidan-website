@@ -1,0 +1,12 @@
+
+.section h2 {
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+    font-family: NType82, system-ui;
+}
+
+.section-list {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}

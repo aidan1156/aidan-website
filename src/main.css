@@ -1,0 +1,93 @@
+
+@font-face { 
+    font-family: NType82; 
+    src: url('./font.ttf'), local('Arial'), local('system-ui'); 
+    font-style: normal;
+}
+
+@property --primary {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #F9F5EF;
+}
+
+body {
+    --primary: #F9F5EF;
+    --primary-foreground: #3a3a3a;
+    --high-contrast: white;
+    --high-contrast-foreground: black;
+    --accent: #dfd3c4;
+}
+
+body.dark {
+    --primary: #171a20;
+    --primary-foreground: #ece5da;
+    --high-contrast: black;
+    --high-contrast-foreground: white;
+    --accent: #555;
+}
+
+body {
+    margin: 0;
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    font-family: "Open Sans", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+
+    --bounce-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --border-radius: 25px;
+    --page-max-width: 700px;
+}
+
+body.epic-mode {
+    animation: pulsePrimary 2s infinite;
+}
+
+
+@keyframes pulsePrimary {
+    0%   { --primary: red; }
+    10%  { --primary: rgb(255, 145, 0); }
+    20%  { --primary: rgb(255, 230, 0); }
+    30%  { --primary: rgb(166, 255, 0); }
+    40%  { --primary: rgb(0, 255, 128); }
+    50%  { --primary: rgb(0, 255, 255); }
+    60%  { --primary: rgb(0, 110, 255); }
+    70%  { --primary: rgb(119, 0, 255); }
+    80%  { --primary: rgb(234, 0, 255); }
+    90%  { --primary: rgb(255, 0, 149); }
+    100%   { --primary: red; }
+}
+
+* {
+    scroll-behavior: smooth;
+    scroll-padding-top: 8rem;
+}
+
+h1, h2, h3 {
+    font-family: NType82, system-ui;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 650ms;
+    animation-timing-function: var(--bounce-function);
+}
+
+::view-transition-new(root) {
+    animation-name: theme-circle-in;
+}
+
+@keyframes theme-circle-in {
+    from {
+        clip-path: circle(0 at var(--theme-transition-x) var(--theme-transition-y));
+    }
+
+    to {
+        clip-path: circle(var(--theme-transition-radius) at var(--theme-transition-x) var(--theme-transition-y));
+    }
+}

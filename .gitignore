@@ -1,0 +1,5 @@
+# Logs
+.vscode/*
+dist/
+node_modules/
+

@@ -1,0 +1,167 @@
+
+/* https://cdpn.io/pen/debug/EajLxJV */
+
+.glass-effect {
+    position: relative;
+    isolation: isolate;
+    interpolate-size: allow-keywords;
+
+    backdrop-filter: var(--glass-id);
+    /* box-shadow: 0 0 2px 1px
+            color-mix(in oklch, canvasText, #0000 85%)
+            inset,
+        0 0 10px 4px
+                color-mix(in oklch, canvasText, #0000 90%)
+            inset,
+        0px 4px 16px rgba(17, 17, 26, 0.05), 0px 8px 24px rgba(17, 17, 26, 0.05),
+        0px 16px 56px rgba(17, 17, 26, 0.05),
+        0px 4px 16px rgba(17, 17, 26, 0.05) inset,
+        0px 8px 24px rgba(17, 17, 26, 0.05) inset,
+        0px 16px 56px rgba(17, 17, 26, 0.05) inset; */
+    box-shadow: 
+        0px 2px 8px rgba(200, 200, 200, 0.05), 0px 4px 12px rgba(200, 200, 200, 0.05),
+        0px 8px 28px rgba(200, 200, 200, 0.05),
+        0px 2px 8px rgba(200, 200, 200, 0.05) inset,
+        0px 4px 12px rgba(200, 200, 200, 0.05) inset,
+        0px 8px 28px rgba(200, 200, 200, 0.05) inset;
+}
+
+.glass-effect.light {
+    box-shadow: 
+        0px 2px 8px rgba(17, 17, 26, 0.05), 0px 4px 12px rgba(17, 17, 26, 0.05),
+        0px 8px 28px rgba(17, 17, 26, 0.05),
+        0px 2px 8px rgba(17, 17, 26, 0.05) inset,
+        0px 4px 12px rgba(17, 17, 26, 0.05) inset,
+        0px 8px 28px rgba(17, 17, 26, 0.05) inset;
+}
+    
+.glass-effect.increase-clarity {
+    background-color: hsla(0, 0%, 31%, 0.3);
+}
+
+.glass-effect.increase-clarity.light {
+    background-color: hsla(0, 0%, 100%, 0.3);
+}
+
+.glass-effect.extra-shadow {
+    box-shadow: 0 0 2px 1px
+           color-mix(in oklch, canvasText, #0000 85%)
+           inset,
+       0 0 10px 4px
+               color-mix(in oklch, canvasText, #0000 90%)
+           inset,
+       0px 4px 16px rgba(17, 17, 26, 0.05), 0px 8px 24px rgba(17, 17, 26, 0.05),
+       0px 16px 56px rgba(17, 17, 26, 0.05),
+       0px 4px 16px rgba(17, 17, 26, 0.05) inset,
+       0px 8px 24px rgba(17, 17, 26, 0.05) inset,
+       0px 16px 56px rgba(17, 17, 26, 0.05) inset;
+}
+
+.glass-effect.light.extra-shadow {
+    box-shadow: 0 0 2px 1px
+           color-mix(in oklch, canvasText, #0000 85%)
+           inset,
+       0 0 10px 4px
+               color-mix(in oklch, canvasText, #0000 90%)
+           inset,
+       0px 4px 16px rgba(17, 17, 26, 0.05), 0px 8px 24px rgba(17, 17, 26, 0.05),
+       0px 16px 56px rgba(17, 17, 26, 0.05),
+       0px 4px 16px rgba(17, 17, 26, 0.05) inset,
+       0px 8px 24px rgba(17, 17, 26, 0.05) inset,
+       0px 16px 56px rgba(17, 17, 26, 0.05) inset;
+}
+
+.glass-effect:focus {
+    outline: none;
+}
+
+.effect-svg {
+    display: none;
+}
+
+.glass-effect .effect-svg {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+
+.blurred-effect {
+    interpolate-size: allow-keywords;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+
+    box-shadow: 
+        0px 2px 8px rgba(17, 17, 26, 0.05), 0px 4px 12px rgba(17, 17, 26, 0.05),
+        0px 8px 28px rgba(17, 17, 26, 0.05),
+        0px 2px 8px rgba(17, 17, 26, 0.05) inset,
+        0px 4px 12px rgba(17, 17, 26, 0.05) inset,
+        0px 8px 28px rgba(17, 17, 26, 0.05) inset;
+}
+
+.blurred-effect.dark {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+.light .hover-on-glass,
+.light .selected-on-glass {
+    border: 1px solid transparent;
+    transition: none;
+}
+
+.light .hover-on-glass:hover,
+.light .selected-on-glass {
+    background: rgba(230, 230, 230, 0.6);
+    box-shadow: -1px -1px 2px white;
+    backdrop-filter: blur(10px);
+}
+
+.dark .hover-on-glass:hover,
+.dark .selected-on-glass {
+    background: rgba(55, 55, 55, 0.6);
+    box-shadow: -1px -1px 2px #ffffff44;
+    backdrop-filter: blur(10px);
+}
+
+.light .on-glass {
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: -1px -1px 1px white;
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    box-shadow: 
+        0px 2px 8px rgba(17, 17, 26, 0.02), 0px 4px 12px rgba(17, 17, 26, 0.02),
+        0px 8px 14px rgba(17, 17, 26, 0.02);
+}
+
+.dark .on-glass {
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: -6px -6px 1px -5px #ffffff22;
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    box-shadow: 
+        0px 2px 8px rgba(17, 17, 26, 0.02), 0px 4px 12px rgba(17, 17, 26, 0.02),
+        0px 8px 14px rgba(17, 17, 26, 0.02);
+}
+
+
+.animate-on-appear {
+    width: auto;
+    height: auto;
+    animation: .3s glass-appear var(--bounce-function);
+}
+
+@keyframes glass-appear {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

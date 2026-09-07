@@ -1,0 +1,29 @@
+
+
+.file-card {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: max-content auto max-content;
+    border: 2px solid var(--accent);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    transition: .5s all;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+}
+
+.file-card:hover {
+    background-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.file-card > svg {
+    width: 1.8rem;
+    aspect-ratio: 1 / 1;
+    fill: var(--primary-foreground);
+    place-self: center;
+}
+
+.file-card > .file-card-text > h3 {
+    margin: 0;
+}

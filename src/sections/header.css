@@ -1,0 +1,190 @@
+
+.header > img {
+    width: 100%;
+    /* aspect-ratio: 2 / 0.9; */
+    height: 20rem;
+    object-fit: cover;
+    object-position: 50% 100%;
+}
+
+.header {
+    display: grid;
+    place-items: end start;
+    font-family: NType82, system-ui;
+    position: relative;
+    isolation: isolate;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.header > * {
+    grid-area: 1 / 1;
+}
+
+.header::after {
+    content: "";
+    grid-area: 1 / 1;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 10rem;
+}
+
+.header::before {
+    content: "";
+    grid-area: 1 / 1;
+    background: radial-gradient(circle at 40% 50%, transparent, rgba(0, 0, 0, 0.3));
+    position: absolute;
+    inset: 0;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    padding: 1rem;
+    font-weight: 400;
+    margin: 0;
+    color: white;
+    z-index: 1;
+}
+
+.header-container .epic-mode-player {
+    --height: 15rem;
+    display: grid;
+    height: var(--height);
+    overflow: hidden;
+    border-radius: var(--border-radius);
+}
+
+.header-container .epic-mode-player > * {
+    grid-area: 1 / 1;
+}
+
+.header-container .epic-mode-player > video {
+    width: 100%;
+    height: var(--height);
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.epic-mode-player-controls {
+    place-self: end stretch;
+    display: flex;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.epic-mode-player-controls > *:first-child {
+    flex: 1;
+    color: white;
+}
+
+.epic-mode-player-controls .playback-button {
+    padding: .6rem 1.4rem;
+    background-color: var(--primary);
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    place-self: end center;
+    transition: .3s all;
+}
+
+.epic-mode-player-controls .playback-button.paused {
+    border-radius: 200px;
+}
+
+.epic-mode-player-controls .playback-button svg {
+    width: 1.7rem;
+    height: 1.7rem;
+    fill: var(--primary-foreground);
+}
+
+
+.music-progress {
+    position: relative;
+    isolation: isolate;
+    margin-top: .5rem;
+    --progress: 0%;
+}
+
+.music-progress input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none; 
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    border-radius: 100vh;
+    height: 0.3em;
+    background: transparent;
+    position: relative;
+    margin: 0.7em 0;
+}
+
+.music-progress::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: var(--progress);
+    width: calc(100% - var(--progress));
+    background-color: #ccc;
+    height: 3px;
+    transform: translateY(-60%);
+    z-index: -1;
+}
+
+.music-progress input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none; 
+    height: 1.8em;
+    width: 0.5em;
+    border-radius: 50vh;
+    background-color: white;
+    border: none;
+}
+
+.music-progress input[type="range"]::-moz-range-thumb {
+    height: 1.8em;
+    width: 0.5em;
+    border-radius: 50vh;
+    background-color: white;
+    border: none;
+}
+
+
+.music-progress > div {
+    width: var(--progress);
+    height: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.music-progress > div::before {
+    content: "";
+    width: 100vmax;
+    height: 13px;
+    display: block;
+    background-color: white;
+    animation: sqiggle 90s infinite linear;
+    --mask:
+    radial-gradient(6.88px at 50% 9.6px,#000 99%,#0000 101%) calc(50% - 8px) 0/16px 51% repeat-x,
+    radial-gradient(6.88px at 50% -5.6px,#0000 99%,#000 101%) 50% 4px/16px calc(51% - 4px) repeat-x,
+    radial-gradient(6.88px at 50% calc(100% - 9.6px),#000 99%,#0000 101%) 50% 100%/16px 51% repeat-x,
+    radial-gradient(6.88px at 50% calc(100% + 5.6px),#0000 99%,#000 101%) calc(50% - 8px) calc(100% - 4px)/16px calc(51% - 4px) repeat-x;
+    -webkit-mask: var(--mask);
+    mask: var(--mask);
+}
+
+@keyframes sqiggle {
+    from {
+        transform: translateX(0px);
+    } 
+    to {
+        transform: translateX(-80vmax);
+    }
+}
