@@ -1,0 +1,39 @@
+
+.noisy-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 250ms ease;
+}
+
+.noisy-gradient.is-ready {
+    opacity: 1;
+}
+
+.noisy-gradient canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+/* The two surfaces are painted up front and swapped by class, so the theme
+   view transition captures an already-correct gradient instead of a stale one. */
+.noisy-gradient canvas[data-theme="light"] {
+    opacity: 1;
+}
+
+body.dark .noisy-gradient canvas[data-theme="light"] {
+    opacity: 0;
+}
+
+body.dark .noisy-gradient canvas[data-theme="dark"] {
+    opacity: 1;
+}

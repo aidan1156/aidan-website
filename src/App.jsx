@@ -9,6 +9,7 @@ import { Experience } from "./sections/Experience"
 import { CVSection } from "./sections/CV"
 import { Achievements } from "./sections/Achievements"
 import { Gallery } from "./sections/Gallery"
+import { NoisyGradient } from "./grain/NoisyGradient"
 
 import './app.css'
 
@@ -99,6 +100,7 @@ function App() {
 
   return (
     <div>
+      <NoisyGradient />
       <GlassNavigationBar floatingTheme={resolvedTheme} fixedTheme={resolvedTheme} className="navigation-bar" innerClassName="navigation-bar-inner">
         <h2>Aidan Baker</h2>
         <div className="navigation-links">
