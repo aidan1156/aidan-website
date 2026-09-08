@@ -11,7 +11,7 @@ export function Experience() {
         },
         {
             title: "Optiver",
-            description: "Incoming placement intern at Optiver as a software engineer. Summer 2026.",
+            description: "Placement intern at Optiver as a software engineer, working on dev infrastructure and data ingestion. Summer 2026.",
             link: "https://www.optiver.com",
             icon: "./images/optiver.png",
         },

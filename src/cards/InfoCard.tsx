@@ -1,35 +1,9 @@
 import './info-card.css';
-import { useEffect, useState } from 'react';
-import { getStoredThemePreference, getSystemTheme, resolveTheme } from '../theme';
+import { useIsDarkTheme } from '../useIsDarkTheme';
 
 
 export function InfoCard({ title, description, link, icon, darkModeIcon, image }: { title: string; description: string; link?: string | null; icon?: string | null; darkModeIcon?: string | null; image?: string | null }) {
-    const getIsDarkTheme = () => {
-        if (typeof document !== 'undefined') {
-            return document.body.classList.contains('dark');
-        }
-
-        return resolveTheme(getStoredThemePreference(), getSystemTheme()) === 'dark';
-    };
-
-    const [isDarkTheme, setIsDarkTheme] = useState(getIsDarkTheme);
-
-    useEffect(() => {
-        if (typeof document === 'undefined') {
-            return;
-        }
-
-        const bodyObserver = new MutationObserver(() => {
-            setIsDarkTheme(getIsDarkTheme());
-        });
-
-        bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-        setIsDarkTheme(getIsDarkTheme());
-
-        return () => {
-            bodyObserver.disconnect();
-        };
-    }, []);
+    const isDarkTheme = useIsDarkTheme();
 
     const visibleIcon = isDarkTheme && darkModeIcon ? darkModeIcon : icon;
 

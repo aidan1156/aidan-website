@@ -2,13 +2,38 @@ import { SupportsLiquidGlass } from "../glass/GlassEffect";
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
+import { useIsDarkTheme } from '../useIsDarkTheme';
+
 import './header.css';
+
+
+const socials = [
+    {
+        label: "LineupsValorant",
+        link: "https://lineupsvalorant.com/profile/lineupsval",
+        icon: "./images/lineupsval.png",
+        darkModeIcon: "./images/lineupsval-dark.png",
+    },
+    {
+        label: "LinkedIn",
+        link: "https://www.linkedin.com/in/aidan-baker-b9928b235/",
+        icon: "./images/linkedin.png",
+        darkModeIcon: "./images/linkedin-dark.png",
+    },
+    {
+        label: "GitHub",
+        link: "https://github.com/aidan1156",
+        icon: "./images/github.png",
+        darkModeIcon: "./images/github-dark.png",
+    },
+];
 
 
 export function Header({setEpicMode, epicMode}: {setEpicMode: (value: boolean) => void, epicMode: boolean}) {
     const audioRef = useRef<HTMLAudioElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const [progress, setProgress] = useState(0);
+    const isDarkTheme = useIsDarkTheme();
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -78,9 +103,25 @@ export function Header({setEpicMode, epicMode}: {setEpicMode: (value: boolean) =
                 <img src="./images/header.jpeg" alt="" />
                 <h1>Aidan Baker</h1>
             </div>
-            <p>
-                I am an undergraduate at Imperial College London studying Computing. Sometimes I build stuff, when I do I try and add it here.
-            </p>
+            <div className="header-intro">
+                <p>
+                    I am an undergraduate at Imperial College London studying Computing. Sometimes I build stuff, when I do I try and add it here.
+                </p>
+                <div className="header-socials">
+                    {socials.map((social) => (
+                        <a
+                            key={social.label}
+                            href={social.link}
+                            aria-label={social.label}
+                            title={social.label}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            <img src={isDarkTheme && social.darkModeIcon ? social.darkModeIcon : social.icon} alt="" />
+                        </a>
+                    ))}
+                </div>
+            </div>
             {!SupportsLiquidGlass() && <p>
                 P.S. I love you for supporting a non Chromium browser, but Chromium just supports more, including the liquid ass effect I use, switch to Chrome or any non Firefox/Safari browser for a better effect.    
             </p>}
