@@ -190,16 +190,28 @@
 }
 
 .header-intro {
-    display: flex;
-    align-items: flex-start;
+    display: grid;
+    grid-template-areas: "description socials";
     gap: 1rem;
+    margin-block: 1em;
+}
+
+@media (max-width: 35em) {
+    .header-intro {
+        gap: 0;
+        grid-template-areas: "description"
+                             "socials";
+    }
 }
 
 .header-intro > p {
-    flex: 1;
+    grid-area: description;
+    margin: 0;
 }
 
 .header-socials {
+    grid-area: socials;
+    place-self: start end;
     display: flex;
     flex-shrink: 0;
     gap: 0.25rem;
