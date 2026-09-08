@@ -18,7 +18,7 @@ function formatFileSize(sizeInBytes: number) {
     return `${size.toFixed(size >= 10 ? 0 : 1)}${units[unitIndex]}`
 }
 
-export function FileCard({ title, link, type }: { title: string; link: string; type: "pdf" }) {
+export function FileCard({ title, link }: { title: string; link: string }) {
     const [size, setSize] = useState('-')
 
     useEffect(() => {

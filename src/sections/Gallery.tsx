@@ -10,48 +10,48 @@ type ImageBox = {
     height: number
 }
 
-export function Gallery() {
-    const images = [
-        "./gallery-images/IMG-20230422-WA0004.jpg", 
-        "./gallery-images/PXL_20240524_004836502.jpg", 
-        "./gallery-images/IMG-20240701-WA0006.jpg",
-        "./gallery-images/notphotoshopped.jpg",
-        "./gallery-images/IMG-20240701-WA0015.jpg",
-        "./gallery-images/IMG_1613.jpg", 
-        "./gallery-images/IMG-20240622-WA0018.jpg", 
-        "./gallery-images/IMG-20240609-WA0005.jpg",
-        "./gallery-images/IMG-20220826-WA0000.jpg", 
-        "./gallery-images/PXL_20240602_154204182.jpg", 
-        "./gallery-images/IMG-20240609-WA0001 (1).jpg",
-        "./gallery-images/Snapchat-1889425769.jpg",
-        "./gallery-images/DSC02966.JPG", 
-        "./gallery-images/DSC03151.JPG", 
-        "./gallery-images/IMG_3515.jpg", 
-        "./gallery-images/IMG_6714.jpg", 
-        "./gallery-images/IMG-20231127-WA0048.jpg", 
-        "./gallery-images/IMG-20240325-WA0007.jpg", 
-        "./gallery-images/jamin.jpg", 
-        "./gallery-images/PXL_20231221_184302061.jpg", 
-        "./gallery-images/PXL_20240201_123408700.jpg", 
-        "./gallery-images/xi.jpg", 
-        "./gallery-images/xi2.jpg", 
-        "./gallery-images/rolzie.jpg", 
-        "./gallery-images/pranav.jpg", 
-        "./gallery-images/IMG-20240628-WA0024.jpg", 
-        "./gallery-images/Snapchat-1886120257.jpg", 
-        "./gallery-images/IMG-20240612-WA0163.jpg", 
-        "./gallery-images/IMG-20240612-WA0147.jpg",
-        "./gallery-images/IMG-20240609-WA0003.jpg",
-        "./gallery-images/PXL_20240602_160054541.MP.jpg",
-        "./gallery-images/PXL_20240517_203706070.jpg",
-        "./gallery-images/PXL_20240331_100335271.jpg",
-        "./gallery-images/IMG-20240624-WA0029.jpg",
-        "./gallery-images/IMG-20240624-WA0012.jpg",
-        "./gallery-images/91B5144D-6A0C-4402-99A2-1BC65B4F4CB5_1_105_c.jpeg",
-        "./gallery-images/BBE2317B-0AD5-4DDB-A9AB-D0C77823AF9B_1_105_c.jpeg",
-        "./gallery-images/PXL_20230223_150948900.MP.jpg"
-    ]
+const images = [
+    "./gallery-images/IMG-20230422-WA0004.jpg", 
+    "./gallery-images/PXL_20240524_004836502.jpg", 
+    "./gallery-images/IMG-20240701-WA0006.jpg",
+    "./gallery-images/notphotoshopped.jpg",
+    "./gallery-images/IMG-20240701-WA0015.jpg",
+    "./gallery-images/IMG_1613.jpg", 
+    "./gallery-images/IMG-20240622-WA0018.jpg", 
+    "./gallery-images/IMG-20240609-WA0005.jpg",
+    "./gallery-images/IMG-20220826-WA0000.jpg", 
+    "./gallery-images/PXL_20240602_154204182.jpg", 
+    "./gallery-images/IMG-20240609-WA0001 (1).jpg",
+    "./gallery-images/Snapchat-1889425769.jpg",
+    "./gallery-images/DSC02966.JPG", 
+    "./gallery-images/DSC03151.JPG", 
+    "./gallery-images/IMG_3515.jpg", 
+    "./gallery-images/IMG_6714.jpg", 
+    "./gallery-images/IMG-20231127-WA0048.jpg", 
+    "./gallery-images/IMG-20240325-WA0007.jpg", 
+    "./gallery-images/jamin.jpg", 
+    "./gallery-images/PXL_20231221_184302061.jpg", 
+    "./gallery-images/PXL_20240201_123408700.jpg", 
+    "./gallery-images/xi.jpg", 
+    "./gallery-images/xi2.jpg", 
+    "./gallery-images/rolzie.jpg", 
+    "./gallery-images/pranav.jpg", 
+    "./gallery-images/IMG-20240628-WA0024.jpg", 
+    "./gallery-images/Snapchat-1886120257.jpg", 
+    "./gallery-images/IMG-20240612-WA0163.jpg", 
+    "./gallery-images/IMG-20240612-WA0147.jpg",
+    "./gallery-images/IMG-20240609-WA0003.jpg",
+    "./gallery-images/PXL_20240602_160054541.MP.jpg",
+    "./gallery-images/PXL_20240517_203706070.jpg",
+    "./gallery-images/PXL_20240331_100335271.jpg",
+    "./gallery-images/IMG-20240624-WA0029.jpg",
+    "./gallery-images/IMG-20240624-WA0012.jpg",
+    "./gallery-images/91B5144D-6A0C-4402-99A2-1BC65B4F4CB5_1_105_c.jpeg",
+    "./gallery-images/BBE2317B-0AD5-4DDB-A9AB-D0C77823AF9B_1_105_c.jpeg",
+    "./gallery-images/PXL_20230223_150948900.MP.jpg"
+]
 
+export function Gallery() {
     const containerRef = useRef<HTMLDivElement | null>(null)
     const imageRefs = useRef<Array<HTMLImageElement | null>>([])
     const [secondRowLastImageBox, setSecondRowLastImageBox] = useState<ImageBox | null>(null)
@@ -59,12 +59,21 @@ export function Gallery() {
     const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
     const [prevSelectedImageIndex, setPrevSelectedImageIndex] = useState<number | null>(null)
 
-    useEffect(() => {
-        if (selectedImageIndex !== null) {
-            setPrevSelectedImageIndex(selectedImageIndex)
+    // prevSelectedImageIndex lags behind so the photo stays rendered while the popup
+    // fades out; it only ever tracks the last image actually opened.
+    const showImage = (index: number | null) => {
+        setSelectedImageIndex(index)
+        if (index !== null) {
+            setPrevSelectedImageIndex(index)
         }
-    }, [selectedImageIndex])
-    
+    }
+
+    // Stepping past either end wraps around to the other.
+    const stepImage = (offset: number) => {
+        if (selectedImageIndex === null) return
+        showImage((selectedImageIndex + offset + images.length) % images.length)
+    }
+
     const measureSecondRowLastImage = () => {
         const container = containerRef.current
         if (!container) {
@@ -116,8 +125,11 @@ export function Gallery() {
     }
 
     useLayoutEffect(() => {
+        // Measuring the grid needs the browser to have laid it out, so reading the rects
+        // here and storing them is the intended use of useLayoutEffect, not a cascade.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         measureSecondRowLastImage()
-    }, [images.length])
+    }, [])
 
     useEffect(() => {
         const container = containerRef.current
@@ -137,7 +149,7 @@ export function Gallery() {
             observer.disconnect()
             window.removeEventListener('resize', measureSecondRowLastImage)
         }
-    }, [images.length])
+    }, [])
 
     useEffect(() => {
         if (!galleryPopupOpen) {
@@ -147,7 +159,7 @@ export function Gallery() {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 setGalleryPopupOpen(false)
-                setSelectedImageIndex(null)
+                showImage(null)
             }
         }
 
@@ -157,15 +169,6 @@ export function Gallery() {
             window.removeEventListener('keydown', handleKeyDown)
         }
     }, [galleryPopupOpen])
-
-    useEffect(() => {
-        if (selectedImageIndex === null) return
-        if (selectedImageIndex < 0) {
-            setSelectedImageIndex(images.length - 1)
-        } else if (selectedImageIndex >= images.length) {
-            setSelectedImageIndex(0)
-        }
-    }, [selectedImageIndex])
 
     return (
         <div className="gallery section">
@@ -184,7 +187,7 @@ export function Gallery() {
                         onLoad={measureSecondRowLastImage}
                         onClick={() => {
                             setGalleryPopupOpen(true)
-                            setSelectedImageIndex(index)
+                            showImage(index)
                         }}
                     />
                 ))}
@@ -210,7 +213,7 @@ export function Gallery() {
                 aria-modal="true"
                 onClick={() => {
                     setGalleryPopupOpen(false)
-                    setSelectedImageIndex(null)
+                    showImage(null)
                 }}
             >
                 <div className={`gallery-popup-panel ${selectedImageIndex !== null ? 'image-open' : ''}`} onClick={(event) => event.stopPropagation()}>
@@ -221,7 +224,7 @@ export function Gallery() {
                                 src={image}
                                 alt={`Gallery image ${index + 1}`}
                                 className="gallery-image"
-                                onClick={() => setSelectedImageIndex(index)}
+                                onClick={() => showImage(index)}
                             />
                         ))}
                         <div></div>
@@ -231,23 +234,23 @@ export function Gallery() {
                     </div>
                     <div className="gallery-controls">
                         <GlassContainer className="close button-group increase-clarity">
-                            <button onClick={() => {setGalleryPopupOpen(false); setSelectedImageIndex(null);}} className='hover-on-glass' title='Close'>
+                            <button onClick={() => {setGalleryPopupOpen(false); showImage(null);}} className='hover-on-glass' title='Close'>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                             </button>
                         </GlassContainer>
 
                         <GlassContainer className="back button-group increase-clarity">
-                            <button onClick={() => setSelectedImageIndex(null)} className='hover-on-glass' title='Back to Gallery'>
+                            <button onClick={() => showImage(null)} className='hover-on-glass' title='Back to Gallery'>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
                             </button>
                         </GlassContainer>
 
                         <GlassContainer className="next-prev-image button-group increase-clarity">
-                            <button onClick={() => setSelectedImageIndex(selectedImageIndex !== null ? selectedImageIndex - 1 : null)} className='hover-on-glass' title='Previous Image'>
+                            <button onClick={() => stepImage(-1)} className='hover-on-glass' title='Previous Image'>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
                             </button>
 
-                            <button onClick={() => setSelectedImageIndex(selectedImageIndex !== null ? selectedImageIndex + 1 : null)} className='hover-on-glass' title='Next Image'>
+                            <button onClick={() => stepImage(1)} className='hover-on-glass' title='Next Image'>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>
                             </button>
                         </GlassContainer>

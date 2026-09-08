@@ -1,5 +1,5 @@
 
-import { JSX, RefObject, useEffect, useRef, useState } from "react";
+import { JSX, RefObject, useEffect, useId, useRef, useState } from "react";
 import './glass-effect.css';
 
 export type GlassData = {
@@ -34,7 +34,9 @@ export enum GlassMode {
 // Owns the glass filter for one element: re-measures on mount, on resize and once a
 // second, and only rebuilds the filter when the measurement actually changed.
 export function useGlassEffect(ref: RefObject<HTMLDivElement | null>, options?: GlassOptions): GlassData | undefined {
-    const idRef = useRef('glass-distortion-' + Math.random().toString(36).substring(2, 15));
+    // useId is stable across renders and unique per element; strip the punctuation
+    // React wraps it in so the result is safe inside an SVG url(#...) reference.
+    const id = 'glass-distortion-' + useId().replace(/[^a-zA-Z0-9]/g, '');
     const signatureRef = useRef<string | undefined>(undefined);
     const [glassEffect, setGlassEffect] = useState<GlassData | undefined>(undefined);
 
@@ -43,16 +45,16 @@ export function useGlassEffect(ref: RefObject<HTMLDivElement | null>, options?: 
 
     useEffect(() => {
         const update = () => {
-            const measurement = MeasureGlass(ref);
+            const measurement = measureGlass(ref);
             const signature = `${measurement.width}x${measurement.height}@${measurement.radius}:${increaseBlur}`;
 
             if (signature === signatureRef.current) return;
             signatureRef.current = signature;
 
-            setGlassEffect(GenerateSvg(idRef.current, measurement, { increaseBlur }));
+            setGlassEffect(generateSvg(id, measurement, { increaseBlur }));
         };
 
-        // MeasureGlass forces a layout, and scroll can fire several times per frame,
+        // measureGlass forces a layout, and scroll can fire several times per frame,
         // so coalesce bursts of events down to a single measurement per frame.
         let frame: number | null = null;
         const scheduleUpdate = () => {
@@ -80,12 +82,12 @@ export function useGlassEffect(ref: RefObject<HTMLDivElement | null>, options?: 
             window.removeEventListener('scroll', scheduleUpdate);
             window.removeEventListener('resize', scheduleUpdate);
         };
-    }, [ref, increaseBlur, updateKey]);
+    }, [ref, id, increaseBlur, updateKey]);
 
     return glassEffect;
 }
 
-export function SupportsLiquidGlass(): boolean {
+export function supportsLiquidGlass(): boolean {
     const navigatorWithUserAgent = navigator as Navigator & {
         userAgentData?: {
             brands: Array<{ brand: string; version: string }>;
@@ -96,7 +98,7 @@ export function SupportsLiquidGlass(): boolean {
         navigatorWithUserAgent.userAgentData.brands.some(brand => brand.brand === 'Chromium')
 }
 
-function MeasureGlass(ref: RefObject<HTMLDivElement | null>): GlassMeasurement {
+function measureGlass(ref: RefObject<HTMLDivElement | null>): GlassMeasurement {
     const element = ref.current
     const rect = element?.getBoundingClientRect()
 
@@ -112,8 +114,8 @@ function MeasureGlass(ref: RefObject<HTMLDivElement | null>): GlassMeasurement {
     return { width: rect?.width, height: rect?.height, radius }
 }
 
-function GenerateSvg(id: string, measurement: GlassMeasurement, modifiers?: GlassModifiers): GlassData {
-    const filter = CalculateFilter(measurement.width, measurement.height, measurement.radius)
+function generateSvg(id: string, measurement: GlassMeasurement, modifiers?: GlassModifiers): GlassData {
+    const filter = calculateFilter(measurement.width, measurement.height, measurement.radius)
 
     const isChromium = SupportsLiquidGlass()
 
@@ -154,7 +156,7 @@ function GenerateSvg(id: string, measurement: GlassMeasurement, modifiers?: Glas
 }
 
 
-function CalculateFilter(width: number | undefined, height: number | undefined, radius: number | undefined): string {
+function calculateFilter(width: number | undefined, height: number | undefined, radius: number | undefined): string {
     const config = {
         width: width ?? 1152,
         height: height ?? 1000,

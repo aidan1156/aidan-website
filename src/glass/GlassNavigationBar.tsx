@@ -1,4 +1,4 @@
-import React, { ReactNode, forwardRef, useCallback, useEffect, useRef, useState } from "react"
+import React, { ReactNode, forwardRef, useCallback, useEffect, useRef, useSyncExternalStore } from "react"
 import { useGlassEffect } from './GlassEffect';
 import './glass-navigation-bar.css';
 type Props = {
@@ -10,6 +10,16 @@ type Props = {
     innerClassName?: string,
     placeholder?: boolean,
 }
+
+function subscribeToScroll(onStoreChange: () => void) {
+    window.addEventListener('scroll', onStoreChange);
+
+    return () => {
+        window.removeEventListener('scroll', onStoreChange);
+    };
+}
+
+const isScrolled = () => window.scrollY > 0;
 
 export const GlassNavigationBar = forwardRef<HTMLDivElement, Props>(function GlassNavigationBar(props, ref) {
     // local default ref we always use inside the component
@@ -25,32 +35,20 @@ export const GlassNavigationBar = forwardRef<HTMLDivElement, Props>(function Gla
             try {
                 // forwarded object ref
                 (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-            } catch (e) {
+            } catch {
                 // ignore if ref can't be assigned
             }
         }
     }, [ref]);
-    const [floatingNav, setFloatingNav] = useState(false);
+    const floatingNav = useSyncExternalStore(subscribeToScroll, isScrolled, () => false);
     const glassEffect = useGlassEffect(localRef, { updateKey: String(floatingNav) });
     const theme = floatingNav ? props.floatingTheme : props.fixedTheme;
 
-    const handleScroll = () => {
-        setFloatingNav(window.scrollY > 0);
-    };
+    const { setTheme } = props;
 
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-
-        handleScroll();
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-    useEffect(() => {
-        props.setTheme?.(theme);
-    }, [floatingNav, props.floatingTheme, props.fixedTheme])
+        setTheme?.(theme);
+    }, [setTheme, theme])
 
     return (
         <div className={`glass-nav-wrapper ${theme} ${props.placeholder ? 'placeholder' : ''} ${props.className || ''}`}>

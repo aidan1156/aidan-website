@@ -8,7 +8,6 @@ export function CVSection() {
             <FileCard
                 title={"CV.pdf"}
                 link={"./cv.pdf"}
-                type={"pdf"}
             />
         </div>
     )
