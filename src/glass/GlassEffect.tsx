@@ -117,7 +117,7 @@ function measureGlass(ref: RefObject<HTMLDivElement | null>): GlassMeasurement {
 function generateSvg(id: string, measurement: GlassMeasurement, modifiers?: GlassModifiers): GlassData {
     const filter = calculateFilter(measurement.width, measurement.height, measurement.radius)
 
-    const isChromium = SupportsLiquidGlass()
+    const isChromium = supportsLiquidGlass()
 
     return {
         id: `url(#${id})`,
