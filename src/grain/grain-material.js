@@ -175,6 +175,36 @@ export function buildField(cssWidth, theme) {
     return field
 }
 
+// Gains are stored in a byte texture, so they are scaled up to use the range.
+// The cap this implies (255 / GAIN_SCALE) has to stay above the largest grain
+// and chroma amplitude in THEMES.
+export const GAIN_SCALE = 4
+
+const toByte = (value) => (value < 0 ? 0 : value > 255 ? 255 : Math.round(value))
+
+// The same field, packed for the GPU: colour and alpha in one RGBA texture,
+// the two grain gains in another.
+export function packField(cssWidth, theme) {
+    const field = buildField(cssWidth, theme)
+    const cells = FIELD_COLS * FIELD_ROWS
+    const colours = new Uint8Array(cells * 4)
+    const gains = new Uint8Array(cells * 4)
+
+    for (let cell = 0; cell < cells; cell++) {
+        const k = cell * FIELD_STRIDE
+        const j = cell * 4
+        colours[j] = toByte(field[k])
+        colours[j + 1] = toByte(field[k + 1])
+        colours[j + 2] = toByte(field[k + 2])
+        colours[j + 3] = toByte(field[k + 3])
+        gains[j] = toByte(field[k + 4] * GAIN_SCALE)
+        gains[j + 1] = toByte(field[k + 5] * GAIN_SCALE)
+        gains[j + 3] = 255
+    }
+
+    return { colours, gains, cols: FIELD_COLS, rows: FIELD_ROWS }
+}
+
 // Progressive renderer: step() fills a slice of rows so a large surface can be
 // produced without blocking for the whole frame. Grain is built from a 2x2
 // window of uniform randoms shared between adjacent rows, which clumps it very

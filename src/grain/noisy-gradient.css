@@ -8,7 +8,7 @@
     pointer-events: none;
     overflow: hidden;
     opacity: 0;
-    transition: opacity 700ms ease;
+    transition: opacity 250ms ease;
 }
 
 .noisy-gradient.is-ready {
