@@ -21,6 +21,8 @@ export function Projects() {
             title: "Lmao Soundboard",
             description: "Created an AI big data soundboard which automatically plays relevant sound effects, I made it for a hackathon so its scrappily done.",
             link: "https://github.com/aidan1156/lmao-soundboard",
+            icon: "./images/megaphone.png",
+            darkModeIcon: "./images/megaphone-dark.png",
         }
     ]
 

@@ -33,7 +33,7 @@ export function Achievements() {
         },
         {
             title: "Went to YC AI Start up School",
-            description: "Went to YC AI SUS 2025, was a lot of fun, met some really cool people and heard from the founders of modern AI.",
+            description: "Went to YC AI SUS 2025 and 2026, was a lot of fun, met some really cool people and heard from the founders of modern AI.",
             link: "https://events.ycombinator.com/ai-sus",
             image: "./images/sf.jpg",
             icon: "./images/yc.svg",
