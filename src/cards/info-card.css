@@ -27,6 +27,16 @@
     border-radius: calc(var(--border-radius) * 0.7);
 }
 
+.info-card .card-title {
+    display: flex;
+    gap: 1em;
+    place-content: space-between;
+}
+
+.info-card .card-title > span {
+    font-size: 0.9rem;
+}
+
 .info-card h3 {
     margin: 0;
     font-family: NType82, system-ui;

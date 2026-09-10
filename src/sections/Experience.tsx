@@ -8,12 +8,16 @@ export function Experience() {
             description: "I built LineupsValorant to help players find and share their favorite Valorant lineups. Since launch we have gained 70k monthly active users as well as 1000's of community uploaded lineups",
             link: "https://lineupsvalorant.com",
             icon: "./images/lineups.svg",
+            startDate: "Jan 2021",
+            endDate: "present",
         },
         {
             title: "Optiver",
-            description: "Placement intern at Optiver as a software engineer, working on dev infrastructure and data ingestion. Summer 2026.",
+            description: "Only placement intern at Optiver summer 2026 as a software engineer, worked on dev infrastructure and data ingestion.",
             link: "https://www.optiver.com",
             icon: "./images/optiver.png",
+            startDate: "April",
+            endDate: "Sept 2026",
         },
         {
             title: "theTradeDesk",
@@ -21,12 +25,16 @@ export function Experience() {
             link: "https://www.thetradedesk.com",
             icon: "./images/ttd.png",
             darkModeIcon: "./images/ttd-dark.png",
+            startDate: "June",
+            endDate: "Sept 2025"
         },
         {
             title: "Newcastle University",
             description: "Worked as a freelance software engineer to create bespoke software for various trials.",
             icon: "./images/newcastle-uni.svg",
-            link: "https://www.ncl.ac.uk/"
+            link: "https://www.ncl.ac.uk/",
+            startDate: "Dec 2021",
+            endDate: "Sep 2024",
         }
     ]
 
@@ -42,6 +50,8 @@ export function Experience() {
                         link={exp.link}
                         icon={exp.icon}
                         darkModeIcon={exp.darkModeIcon}
+                        startDate={exp.startDate}
+                        endDate={exp.endDate}
                     />
                 ))}
             </div>

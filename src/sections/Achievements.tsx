@@ -10,6 +10,13 @@ export function Achievements() {
             icon: null,
         },
         {
+            title: "Went to YC AI Start up School",
+            description: "Went to YC AI SUS 2025 and 2026, was a lot of fun, met some really cool people and heard from the founders of modern AI.",
+            link: "https://events.ycombinator.com/ai-sus",
+            image: "./images/sf.jpg",
+            icon: "./images/yc.svg",
+        },
+        {
             title: "Participation Award in SMC",
             description: "Achieved a certificate of participation in the UK Senior Maths Challenge while in Y12. I got a gold in the next year but promised my teacher I'd mention my certificate of participation in UCAS etc.",
             link: null,
@@ -31,13 +38,6 @@ export function Achievements() {
             icon: "./images/boosted.png",
             darkModeIcon: "./images/boosted-dark.png",
         },
-        {
-            title: "Went to YC AI Start up School",
-            description: "Went to YC AI SUS 2025 and 2026, was a lot of fun, met some really cool people and heard from the founders of modern AI.",
-            link: "https://events.ycombinator.com/ai-sus",
-            image: "./images/sf.jpg",
-            icon: "./images/yc.svg",
-        }
     ]
 
     return (

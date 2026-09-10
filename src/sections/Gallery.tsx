@@ -12,7 +12,6 @@ type ImageBox = {
 
 const images = [
     "./gallery-images/IMG-20230422-WA0004.jpg",
-    "./gallery-images/PXL_20240524_004836502.jpg",
     "./gallery-images/IMG-20240701-WA0006.jpg",
     "./gallery-images/notphotoshopped.jpg",
     "./gallery-images/IMG-20240701-WA0015.jpg",
@@ -42,6 +41,7 @@ const images = [
     "./gallery-images/IMG-20240624-WA0012.jpg",
     "./gallery-images/91B5144D-6A0C-4402-99A2-1BC65B4F4CB5_1_105_c.jpeg",
     "./gallery-images/BBE2317B-0AD5-4DDB-A9AB-D0C77823AF9B_1_105_c.jpeg",
+    "./gallery-images/PXL_20240524_004836502.jpg",
     "./gallery-images/PXL_20230223_150948900.MP.jpg",
     "./gallery-images/IMG-20260810-WA0027.jpg",
     "./gallery-images/IMG-20260813-WA0034.jpg",

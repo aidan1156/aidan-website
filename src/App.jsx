@@ -12,6 +12,7 @@ import { Gallery } from "./sections/Gallery"
 import { NoisyGradient } from "./grain/NoisyGradient"
 
 import './app.css'
+import { Involvement } from "./sections/Involvement"
 
 
 function App() {
@@ -116,6 +117,7 @@ function App() {
         <Experience />
         <Projects />
         <Achievements />
+        <Involvement />
         <CVSection />
         <Gallery />
       </main>

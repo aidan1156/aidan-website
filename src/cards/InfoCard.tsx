@@ -2,7 +2,7 @@ import './info-card.css';
 import { useIsDarkTheme } from '../useIsDarkTheme';
 
 
-export function InfoCard({ title, description, link, icon, darkModeIcon, image }: { title: string; description: string; link?: string | null; icon?: string | null; darkModeIcon?: string | null; image?: string | null }) {
+export function InfoCard({ title, description, link, icon, darkModeIcon, image, startDate, endDate }: { title: string; description: string; link?: string | null; icon?: string | null; darkModeIcon?: string | null; image?: string | null; startDate?: string, endDate?: string }) {
     const isDarkTheme = useIsDarkTheme();
 
     const visibleIcon = isDarkTheme && darkModeIcon ? darkModeIcon : icon;
@@ -19,7 +19,14 @@ export function InfoCard({ title, description, link, icon, darkModeIcon, image }
         >
             {image && <img src={image} alt="" className="info-card-image" />}
             <div>
-                <h3>{title}</h3>
+                <div className="card-title">
+                    <h3>{title}</h3>
+                    <span>
+                        {startDate}
+                        {(startDate && endDate) && " - "}
+                        {endDate}
+                    </span>
+                </div>
                 <p>{description}</p>
             </div>
             <div className={'icon-wrapper ' + (visibleIcon && link ? 'switch-on-hover' : '')}>
