@@ -202,6 +202,10 @@
         grid-template-areas: "description"
                              "socials";
     }
+
+    .header-socials {
+        margin-top: 0.75rem;
+    }
 }
 
 .header-intro > p {
@@ -215,7 +219,6 @@
     display: flex;
     flex-shrink: 0;
     gap: 0.25rem;
-    margin-top: 0.75rem;
 }
 
 .header-socials a {
