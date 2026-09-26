@@ -125,7 +125,7 @@
     position: relative;
 }
 
-.gallery-controls > * {
+.gallery-popup.open .gallery-controls > * {
     pointer-events: all;
 }
 
