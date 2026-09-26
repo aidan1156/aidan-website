@@ -1,0 +1,39 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# The build happens on the server, so let deploys queue rather than cancelling a
+# half-finished remote build that this runner can no longer supervise.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      # The key is pinned to /usr/local/bin/deploy-aidan-website by a forced
+      # command in authorized_keys, so it cannot do anything but deploy.
+      - name: Build and publish on the server
+        run: |
+          ssh -i ~/.ssh/id_ed25519 \
+            -o UserKnownHostsFile=~/.ssh/known_hosts \
+            -o StrictHostKeyChecking=yes \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}"
+
+      - name: Verify the site is up
+        run: |
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --retry 5 --retry-delay 3 https://aidanba.com/)
+          echo "https://aidanba.com/ -> $code"
+          test "$code" = "200"
