@@ -45,6 +45,7 @@ const images = [
     "./gallery-images/PXL_20230223_150948900.MP.jpg",
     "./gallery-images/IMG-20260810-WA0027.jpg",
     "./gallery-images/IMG-20260813-WA0034.jpg",
+    "./gallery-images/PXL_20260921_072616048.jpg",
 ]
 
 export function Gallery() {
