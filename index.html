@@ -8,8 +8,99 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <title>Aidan Baker</title>
+    <style>
+      #loading-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-content: center;
+        background-color: #F9F5EF;
+        transition: opacity .2s ease, visibility .2s;
+      }
+
+      body.dark #loading-screen {
+        background-color: #171a20;
+      }
+
+      #loading-screen.done {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .loading-track {
+        position: relative;
+        width: min(16rem, 60vw);
+        height: 4px;
+        border-radius: 100vh;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.15);
+        /* Only show the bar if loading takes a noticeable amount of time */
+        opacity: 0;
+        animation: loading-track-in .2s ease-out 1s forwards;
+      }
+
+      .loading-wrapper {
+        opacity: 0;
+        animation: appear .2s ease-out 1s forwards;
+      }
+
+      @keyframes appear {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      .loading-text {
+        text-align: center;
+        padding: 1em;
+        font-size: 3rem;
+      }
+
+      @keyframes loading-track-in {
+        to { opacity: 1; }
+      }
+
+      body.dark .loading-track {
+        background-color: rgba(236, 229, 218, 0.15);
+      }
+
+      .loading-bar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        border-radius: inherit;
+        background-color: #3a3a3a;
+        /* Indeterminate: the right edge races ahead, the left edge chases it */
+        animation: loading-indeterminate 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+      }
+
+      body.dark .loading-bar {
+        background-color: #ece5da;
+      }
+
+      @keyframes loading-indeterminate {
+        0% { left: 0; right: 100%; }
+        50% { left: 25%; right: 0; }
+        100% { left: 100%; right: 0; }
+      }
+    </style>
   </head>
   <body>
+    <script>
+      // Apply the theme before first paint so the loading screen matches it
+      (function () {
+        var pref = null
+        try { pref = localStorage.getItem('theme-preference') } catch (e) {}
+        var dark = pref === 'dark' || (pref !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
+        if (dark) document.body.classList.add('dark')
+      })()
+    </script>
+    <div id="loading-screen" aria-hidden="true">
+      <div class="loading-wrapper">
+        <div class="loading-text">:)</div>
+        <div class="loading-track"><div class="loading-bar"></div></div>
+      </div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
