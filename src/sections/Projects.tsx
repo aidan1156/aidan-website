@@ -13,7 +13,7 @@ export function Projects() {
         {
             title: "Characterdle",
             description: "Made a better Wordle, you guess the daily character as you would in Wordle. 26 possible options instead of 2300 words, much easier!",
-            link: "./characterdle.html",
+            link: "https://characterdle.aidanba.com",
             icon: "./images/wordle.png",
             darkModeIcon: "./images/wordle-dark.png",
         },
