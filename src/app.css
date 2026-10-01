@@ -3,7 +3,7 @@
 main {
     max-width: var(--page-max-width);
     padding: 1rem;
-    margin: 3rem auto;
+    margin: 3rem auto 5rem auto;
     min-height: 120vh;
 }
 
@@ -34,4 +34,38 @@ main {
     .navigation-links {
         display: none;
     }
+}
+
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 0;
+    width: auto;
+    width: min(calc(100% - 2rem), var(--page-max-width));
+    box-sizing: border-box;
+    padding: 1rem;
+    transition: transform 0.5s var(--bounce-function);
+}
+
+.scroll-to-top.hidden {
+    transform: translateY(5rem);
+    pointer-events: none;
+}
+
+.scroll-to-top > * {
+    border-radius: 100vmax;
+    width: max-content;
+    margin: 0 0 0 auto;
+    line-height: 0;
+}
+
+.scroll-to-top button {
+    border-radius: 100vmax;
+    padding: 0.5rem;
+}
+
+.scroll-to-top svg {
+    fill: var(--primary-foreground);
+    width: 2.5rem;
+    height: 2.5rem;
 }

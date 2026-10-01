@@ -25,10 +25,12 @@ const images = [
     "./gallery-images/IMG_3515.jpg",
     "./gallery-images/IMG_6714.jpg",
     "./gallery-images/IMG-20231127-WA0048.jpg",
+    "./gallery-images/PXL_20260921_072616048.jpg",
     "./gallery-images/jamin.jpg",
     "./gallery-images/PXL_20231221_184302061.jpg",
     "./gallery-images/xi.jpg",
     "./gallery-images/xi2.jpg",
+    "./gallery-images/image-tien-china.png",
     "./gallery-images/rolzie.jpg",
     "./gallery-images/pranav.jpg",
     "./gallery-images/Snapchat-1886120257.jpg",
@@ -45,7 +47,6 @@ const images = [
     "./gallery-images/PXL_20230223_150948900.MP.jpg",
     "./gallery-images/IMG-20260810-WA0027.jpg",
     "./gallery-images/IMG-20260813-WA0034.jpg",
-    "./gallery-images/PXL_20260921_072616048.jpg",
 ]
 
 export function Gallery() {

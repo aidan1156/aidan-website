@@ -111,7 +111,9 @@
 
 
 .light .hover-on-glass,
-.light .selected-on-glass {
+.light .selected-on-glass,
+.dark .hover-on-glass,
+.dark .selected-on-glass {
     border: 1px solid transparent;
     transition: none;
 }

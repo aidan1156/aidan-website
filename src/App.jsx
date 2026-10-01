@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { flushSync } from 'react-dom'
 import { GlassNavigationBar } from "./glass/GlassNavigationBar"
+import { GlassContainer } from "./glass/GlassContainer"
 import { ThemeSwitcher } from "./ThemeSwitcher"
 import { applyThemeToBody, getStoredThemePreference, getSystemTheme, resolveTheme, saveThemePreference } from "./theme"
 import { Header } from "./sections/Header"
@@ -9,10 +10,10 @@ import { Experience } from "./sections/Experience"
 import { CVSection } from "./sections/CV"
 import { Achievements } from "./sections/Achievements"
 import { Gallery } from "./sections/Gallery"
+import { Involvement } from "./sections/Involvement"
 import { NoisyGradient } from "./grain/NoisyGradient"
 
 import './app.css'
-import { Involvement } from "./sections/Involvement"
 
 
 function App() {
@@ -31,7 +32,8 @@ function App() {
 
     const canAnimateTheme = typeof document.startViewTransition === 'function' && triggerElement instanceof HTMLElement
 
-    if (!canAnimateTheme) {
+    const themeChanged = resolveTheme(nextPreference, systemTheme) !== resolveTheme(themePreference, systemTheme)
+    if (!canAnimateTheme || !themeChanged) {
       commitThemePreference()
       return
     }
@@ -87,6 +89,15 @@ function App() {
     }
   }, [])
 
+  const [scrolledDown, setScrolledDown] = useState(() => window.scrollY >= 50)
+
+  useEffect(() => {
+    const onScroll = () => setScrolledDown(window.scrollY >= 50)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   useEffect(() => {
     saveThemePreference(themePreference)
   }, [themePreference])
@@ -120,6 +131,13 @@ function App() {
         <Involvement />
         <CVSection />
         <Gallery />
+        <div className={`scroll-to-top ${scrolledDown ? '' : 'hidden'}`}>
+          <GlassContainer className="increase-clarity">
+            <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="hover-on-glass" aria-label="Scroll to top" title="Scroll to top">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z"/></svg>
+            </button>
+          </GlassContainer>
+        </div>
       </main>
     </div>
   )

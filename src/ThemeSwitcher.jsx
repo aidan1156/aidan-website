@@ -32,7 +32,6 @@ export function ThemeSwitcher({ value, onChange }) {
           title={option.label}
         >
             {option.icon}
-          {/* <img src={option.icon} alt="" aria-hidden="true" /> */}
         </button>
       ))}
     </div>
