@@ -5,7 +5,7 @@ export function Involvement() {
     const involvements = [
         {
             title: "[Craft]",
-            description: "Co-hosted [Craft], a builders society, designed to help people build the things they love",
+            description: "Co-hosted [Craft], a passion project building society, designed to help people build the things they love",
             link: "https://www.craftedu.org/",
             startDate: "Nov 2023",
             endDate: "Dec 2025",
